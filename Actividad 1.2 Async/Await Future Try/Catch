@@ -1,0 +1,97 @@
+import 'dart:math';
+
+class PedidoNoEncontrado implements Exception {
+  int id;
+  PedidoNoEncontrado(this.id);
+  @override
+  String toString() => 'No se encontró el pedido $id';
+}
+
+class Pedido {
+  int id;
+  String nombre;
+  Pedido(this.id, this.nombre);
+}
+
+class ServicioPedidos {
+  Random random = Random();
+
+  Map<int, Pedido> pedidos = {
+    1: Pedido(1, 'Macbooks'),
+    2: Pedido(2, 'Mouse rosa'),
+    3: Pedido(3, 'Teclado inalambrico'),
+    4: Pedido(4, 'Cpu'),
+  };
+
+  Future<Pedido> buscarPedido(int id) async {
+    int demora = 500 + random.nextInt(2000);
+
+    await Future.delayed(Duration(milliseconds: demora), () {
+      if (random.nextInt(100) < 20) {
+        throw Exception('Error de conexión con el pedido $id');
+      }
+      if (!pedidos.containsKey(id)) {
+        throw PedidoNoEncontrado(id);
+      }
+    });
+
+    return pedidos[id]!;
+  }
+
+  Future<Pedido> buscarConTimeout(int id) async {
+    try {
+      var resultado = await buscarPedido(id).timeout(
+        Duration(seconds: 2),
+        onTimeout: () => throw Exception('Se agotó el tiempo para el pedido $id'),
+      );
+      return resultado;
+    } on PedidoNoEncontrado {
+      rethrow;
+    }
+  }
+
+  Future<List<String>> buscarVariosPedidos(List<int> ids) async {
+    List<Future<String>> futuros = [];
+
+    for (var id in ids) {
+      futuros.add(_buscarComoTexto(id));
+    }
+
+    return await Future.wait(futuros);
+  }
+
+  Future<String> _buscarComoTexto(int id) async {
+    try {
+      var pedido = await buscarConTimeout(id);
+      return 'Pedido $id: ${pedido.nombre}';
+    } on Exception catch (err) {
+      return 'Pedido $id: $err';
+    }
+  }
+}
+
+void main() async {
+  print('Inicio del programa');
+  var servicio = ServicioPedidos();
+
+  try {
+    var pedido = await servicio.buscarPedido(2);
+    print(pedido.nombre);
+  } on Exception catch (err) {
+    print('Exception: $err');
+  } catch (err) {
+    print('Error: $err');
+  } finally {
+    print('Fin de la búsqueda individual');
+  }
+
+  print('Buscando varios pedidos...');
+  List<int> ids = [1, 999, 3, 250, 4];
+  List<String> resultados = await servicio.buscarVariosPedidos(ids);
+
+  for (var r in resultados) {
+    print(r);
+  }
+
+  print('Fin del programa');
+} 
