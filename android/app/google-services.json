@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "123245714184",
+    "project_id": "app-parcial-brenda",
+    "storage_bucket": "app-parcial-brenda.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123245714184:android:d1abbb2e7bef4ba95b2abd",
+        "android_client_info": {
+          "package_name": "com.example.app_parcial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123245714184-cmnn6kjuqist55gqjkkcji4d2q4tqlv1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhU4NuPXTLgeJoXe9Q--X-LBwzNIJO-4U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123245714184-cmnn6kjuqist55gqjkkcji4d2q4tqlv1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "123245714184-4kjicudiq1in7vvdl9qr7vjai71k468n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.appParcial"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
